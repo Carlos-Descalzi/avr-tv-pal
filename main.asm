@@ -35,7 +35,7 @@
     jmp no_int
     jmp no_int
     jmp no_int
-    jmp run_timer_text
+    jmp run_timer
     jmp no_int
     jmp no_int
     jmp no_int
@@ -63,8 +63,9 @@ main:
     out DDRD,	        r16
     out PORTD,          r16
     
-    ldi r16,	        0xFF
+    ldi r16,            0xF7
     out DDRB,	        r16
+    ldi r16,	        0xFF
     out DDRC,       	r16
     out DDRA,	        r16
     ; SPI
@@ -101,6 +102,16 @@ main:
 main_loop:
     rjmp main_loop
 
+run_timer:
+    in      r16,    CTRLI
+    andi    r16,    FLAG_MODE
+    brne    _gfx                        ; 0: Text, 1: Graphics
+    nop
+    jmp    text_mode
+_gfx:
+    jmp    gfx_mode
+
+    
 no_int:
     reti
     nop

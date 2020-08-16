@@ -3,7 +3,7 @@
 ;  SYNC     PB0 ------------- PA0    A0
 ;  BUSRQ    PB1 -           - PA1    A1
 ;  OE       PB2 -           - PA2    A2
-;           PB3 -           - PA3    A3
+;  MODE     PB3 -           - PA3    A3
 ;           PB4 -           - PA4    A4
 ;           PB5 -           - PA5    A5
 ;           PB6 -           - PA6    A6
@@ -33,6 +33,7 @@
 ; PORTB 
 .equ    DDRB    , 0x17
 .equ	CTRL	, 0x18
+.equ    CTRLI   , 0x16
 ; PORTC
 .equ    DDRC    , 0x14
 .equ	ADDRH	, 0x15
@@ -90,6 +91,12 @@ PIN_SYNC		    = 0x00
 PIN_BUSREQ			= 0x01
 PIN_OE				= 0x02
 
+FLAG_SYNC           = 0x01
+FLAG_BUSREQ         = 0x02
+FLAG_OE             = 0x04
+; Mode is: 0 - Text, 1 - Graphics
+FLAG_MODE           = 0x08
+
 STAT_SYNC		    = 0x00
 STAT_TBORDER		= 0x01
 STAT_DRAW			= 0x02
@@ -134,8 +141,8 @@ RAMEND				= 0x085f
     sbi 	CTRL, 	PIN_BUSREQ	    ; Chip-select clear on external SRAM.
 .endm
 
-.macro DELAY_4US
-    ldi  DELAY, 21
+.macro DELAY_4US                    ; Not 4uS exactly, I reduced 3 cycles
+    ldi  DELAY, 18
     dec  DELAY
     brne .-4
     nop

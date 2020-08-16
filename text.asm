@@ -1,8 +1,8 @@
 ; vim: syntax=asm
-.global run_timer_text
+.global text_mode
 .include "defs.inc"
 
-run_timer_text:
+text_mode:
     cpi		STATUS,	    STAT_SYNC
     brne 	draw_top_border
     rcall 	do_sync

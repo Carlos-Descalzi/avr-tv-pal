@@ -7,7 +7,7 @@ ASFLAGS=-mmcu=$(MCU)
 OBJCOPY=avr-objcopy
 OBJDUMP=avr-objdump
 FORMAT=ihex
-OBJS=main.o fontmap.o text.o
+OBJS=main.o fontmap.o text.o gfx.o
 PORT=/dev/ttyS5
 
 all: tvasm lst
