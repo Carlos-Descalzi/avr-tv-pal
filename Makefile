@@ -1,15 +1,13 @@
 ASM=avr-as
 LD=avr-ld
 MCU=atmega32
-#OPTLEVEL=5
-#CFLAGS=-mmcu=$(MCU) -D -g
 CFLAGS=-mmcu=$(MCU)
 LDFLAGS=
 ASFLAGS=-mmcu=$(MCU)
 OBJCOPY=avr-objcopy
 OBJDUMP=avr-objdump
 FORMAT=ihex
-OBJS=main.o fontmap.o text.o 
+OBJS=main.o fontmap.o
 PORT=/dev/ttyS5
 
 all: tvasm lst
@@ -32,9 +30,6 @@ tvasm.elf: $(OBJS)
 
 %.o: %.asm $(INC)
 	$(ASM) $(CFLAGS) $< -o $@
-
-#%.inc: %.png
-#	python3 img2data.py $< 
 	
 burn: all
 	avrdude -c usbasp -p $(MCU) -U lfuse:w:0xff:m -U hfuse:w:0xdf:m -U flash:w:tvasm.hex 
