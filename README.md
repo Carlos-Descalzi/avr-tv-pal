@@ -1,10 +1,11 @@
-# avr-text-tv-pal
+# avr-tv-pal
 
-B/W PAL Text generation from an Atmega32 microcontroller running at 16Mhz.
-It has a fixed font map. The character output is generated with data read from an external memory accessed via IO pins.
+B/W PAL Text and Graphics display from an Atmega32 microcontroller running at 16Mhz.
+Graphics mode has a resolution of 256x192 pixels black and white.
+Text mode has a resolution of 32x24 characters. Font map is fixed, stored in program memory.
 
-Written in GNU AVR Assembler. Right now the code renders an image stored in Program Memory, but the intention is to read from an external RAM or EPROM, if you look at the code is using ports to handle addressing and data read, although is not yet working at all.
+Written in GNU AVR Assembler. 
 
-It uses SPI as shift register to write bits into screen. The output resolution is 256x192 pixels in 1BPP. Every 8th pixel is a bit larger than the others, there is one extra clock cycle there to load the shift register.
+It uses SPI as shift register to write bits into screen. Every 8th pixel is a bit larger than the others, there is one extra clock cycle there to load the shift register.
 
 ![Screenshot](./run-example.jpg)
