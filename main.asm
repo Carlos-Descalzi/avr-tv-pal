@@ -90,10 +90,6 @@ PIN_SYNC		    = 0x00
 PIN_BUSREQ			= 0x01
 PIN_OE				= 0x02
 
-FLAG_SYNC           = 0x01
-FLAG_BUSREQ         = 0x02
-FLAG_OE             = 0x04
-
 STAT_SYNC		    = 0x00
 STAT_TBORDER		= 0x01
 STAT_DRAW			= 0x02
@@ -120,33 +116,21 @@ RAMEND				= 0x085f
 ; Macros
 ;
 .macro  ZERO
-    ;andi    CTRLR,  ~FLAG_SYNC
-    ;out     CTRL,   CTRLR
     cbi     CTRL,   PIN_SYNC
 .endm
 .macro  BLACK
-    ;ori     CTRLR,  FLAG_SYNC
-    ;out     CTRL,   CTRLR
     sbi     CTRL,   PIN_SYNC
 .endm
 .macro	SET_OE
-    ;andi    CTRLR,  ~FLAG_OE
-    ;out     CTRL,   CTRLR
     cbi		CTRL,	PIN_OE		    ; OE set on external SRAM
 .endm
 .macro  CLR_OE
-    ;ori     CTRLR,  FLAG_OE
-    ;out     CTRL,   CTRLR
     sbi		CTRL,	PIN_OE		    ; OE clear on external SRAM
 .endm
 .macro  SET_CE
-    ;andi    CTRLR,  ~FLAG_BUSREQ
-    ;out     CTRL,   CTRLR
     cbi 	CTRL, 	PIN_BUSREQ	    ; Chip-select set on external SRAM.
 .endm
 .macro  CLR_CE
-    ;ori     CTRLR,  FLAG_BUSREQ
-    ;out     CTRL,   CTRLR
     sbi 	CTRL, 	PIN_BUSREQ	    ; Chip-select clear on external SRAM.
 .endm
 
@@ -317,20 +301,18 @@ do_border:
 .macro LOADBYTE
     ; The whole byte laod is done while shift register 
     ; writes on screen, this MUST be 17 clock cycles.
-    out     ADDRL,  XL
-    out     ADDRH,  XH
+    out     ADDRL,      XL
+    out     ADDRH,      XH
     nop
     nop
     SET_OE
-    adiw    XL,     1
-    movw    ZL,     YL
-    in		r16,	DATA			; Get the character to display from data bus.
-    
-    add 	ZL,		r16				; Add the character to display
-    adc 	ZH,		ROWIDX			; Add the character row.
-    
+    adiw    XL,         1
+    movw    ZL,         YL
+    in		r16,	    DATA		; Get the character to display from data bus.
+    add 	ZL,		    r16			; Add the character to display
+    adc 	ZH,		    ROWIDX		; Add the character row.
     CLR_OE
-    lpm		r16,	Z               ; ... and get the byte to display.
+    lpm		r16,	    Z           ; ... and get the byte to display.
 .endm
 
 
